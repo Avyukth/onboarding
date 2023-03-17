@@ -15,27 +15,9 @@ enum Platform {
     Linux,
 }
 
-// create a enum for different  packages
-enum Package {
-    Git,
-    Zsh,
-    ZshCompletions,
-    BashCompletion,
-}
 impl AsRef<OsStr> for Package {
     fn as_ref(&self) -> &OsStr {
         OsStr::from_bytes(self.name().as_bytes())
-    }
-}
-
-impl Package {
-    fn name(&self) -> &str {
-        match self {
-            Package::Git => "git",
-            Package::Zsh => "zsh",
-            Package::ZshCompletions => "zsh-completions",
-            Package::BashCompletion => "bash-completion",
-        }
     }
 }
 
@@ -52,59 +34,6 @@ fn detect_platform() -> Platform {
         _ => panic!("Unsupported platform"),
     }
 }
-
-// fn install_software(platform: Platform) {
-//     match platform {
-//         Platform::Darwin => {
-//             // Install Homebrew if it's not installed
-//             if !Command::new("brew").status().is_ok() {
-//                 let _ = Command::new("bash")
-//                     .arg("-c")
-//                     .arg("\"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
-//                     .status()
-//                     .expect("Failed to install Homebrew");
-//             }
-
-//             // Install the required software
-//                 let packages = vec![
-//         Package::Git,
-//         Package::Zsh,
-//         Package::ZshCompletions,
-//         Package::BashCompletion,
-//     ];
-//             let _ = Command::new("brew")
-//                 .args(&["install"])
-//                 .args(&packages)
-//                 .status()
-//                 .expect("Failed to install required software");
-//         }
-//         Platform::Linux => {
-//             // Install required packages
-//             let _ = Command::new("sudo")
-//                 .args(&["apt", "update"])
-//                 .status()
-//                 .expect("Failed to update package list");
-
-//                 let packages = vec![
-//         Package::Git,
-//         Package::Zsh,
-//         Package::ZshCompletions,
-//         Package::BashCompletion,
-//     ];
-//             let _ = Command::new("sudo")
-//                 .args(&["apt", "install", "-y"])
-//                 .args(&packages)
-//                 .status()
-//                 .expect("Failed to install required software");
-//         }
-//         _ => {
-//             eprintln!("Unsupported platform");
-//             std::process::exit(1);
-//         }
-//     }
-
-//     println!("All required software has been installed successfully.");
-// }
 
 fn install_software(platform: Platform) {
     match platform {
@@ -125,12 +54,9 @@ fn install_software(platform: Platform) {
                 .expect("Failed to install Zsh");
 
             // Install Oh My Zsh
-            let _ = Command::new("bash")
-                .arg("-c")
-                .arg("-y")
-                .arg("\"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"")
-                .status()
-                .expect("Failed to install Oh My Zsh");
+            install_oh_my_zsh();
+
+            install_omz_plugins();
         }
         Platform::Linux => {
             // Install required packages

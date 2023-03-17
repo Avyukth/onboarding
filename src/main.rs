@@ -1,11 +1,10 @@
 use std::env;
 use std::env::temp_dir;
-use std::ffi::OsStr;
 use std::fs::File;
 use std::io::Write;
-use std::os::unix::ffi::OsStrExt;
+
 use std::path::Path;
-use std::path::PathBuf;
+
 use std::process::Command;
 
 // ... (Package enum definition) ...
@@ -13,12 +12,6 @@ use std::process::Command;
 enum Platform {
     Darwin,
     Linux,
-}
-
-impl AsRef<OsStr> for Package {
-    fn as_ref(&self) -> &OsStr {
-        OsStr::from_bytes(self.name().as_bytes())
-    }
 }
 
 fn main() {

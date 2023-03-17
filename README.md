@@ -2,5 +2,5 @@
 Run 
 ```
 cargo build 
-./onboarding 
+sh target/onboarding 
 ```
